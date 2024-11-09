@@ -8,6 +8,10 @@ def process_query(query: str, column_name: str, df: pd.DataFrame):
     row data from the specified column in quotes for
     exact match search on Google.
     """
+    # Create dataframe from the dictionary
+    df = pd.DataFrame(df)
+
+    # Initialize list to store search queries
     search_queries = []
     try:
         # Check if the specified column exists in the DataFrame

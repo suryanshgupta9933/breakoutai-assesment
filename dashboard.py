@@ -1,36 +1,52 @@
 # Importing Dependencies
 import os
-import logging
 import requests
 import pandas as pd
 import streamlit as st
+from dotenv import load_dotenv
 
-# FastAPI backend URL
-BACKEND_URL = "http://127.0.0.1:8000"
+from pipeline import run_pipeline
 
-st.title("Dashboard")
+# Load environment variables
+load_dotenv()
 
-st.sidebar.title("BreakoutAI.tech")
-st.sidebar.markdown("---")
-st.sidebar.write("Created by [Suryansh Gupta](https://github.com/suryanshgupta9933)")
+UPLOAD_ENDPOINT = os.getenv("UPLOAD_ENDPOINT")
+PIPELINE_ENDPOINT = os.getenv("PIPELINE_ENDPOINT")
 
-# File upload section
-uploaded_file = st.file_uploader("Upload CSV File", type="csv")
+# Set up Streamlit app title
+st.title("AI Query Dashboard")
+st.write("This dashboard allows you to upload your csv data, define custom search queries, and let the AI retrieve relevant web data for each entity. View and download the results in a structured format with ease.")
+
+# Sidebar
+with st.sidebar:
+    st.title("BreakoutAI.tech")
+    st.markdown("---")
+    st.header("Upload CSV File")
+    uploaded_file = st.file_uploader("Choose a CSV file to get started", type="csv")
+    st.markdown("##### Note: Remove the csv file to start over.")
+    st.markdown("---")
+    st.write("Created by [Suryansh Gupta](https://github.com/suryanshgupta9933)")
+
+# Main content
 if uploaded_file:
     files = {"file": uploaded_file.getvalue()}
-    response = requests.post(f"{BACKEND_URL}/upload-csv/", files=files)
-    if response.status_code == 200:
-        columns = response.json().get("columns", [])
-        selected_column = st.selectbox("Select the main column", columns)
-        
+    result = requests.post(UPLOAD_ENDPOINT, files=files)
+    data = result.json()  
+    if result.status_code == 200:
+        df = pd.DataFrame(data["csv_data"])
+        selected_column = st.selectbox("Select the main column", df.columns.tolist())
+        st.write("Data Preview:")
+        st.write(df.head(5))
+
         # Query section
-        query = st.text_input("Enter your query with placeholders, e.g., 'Get me the email of {company}'")
-        
+        query = st.text_input("Enter your query with placeholders, e.g., 'Get me the email of {column_name}'")
         if st.button("Run Query"):
-            # Call FastAPI process-query endpoint
-            data = {"column_name": selected_column}
-            result = requests.post(f"{BACKEND_URL}/process-query/", json=data, params={"query": query})
+            data = {"query": query,
+                    "column_name": selected_column,
+                    "df": df.to_dict(orient="records")}
+            result = requests.post(PIPELINE_ENDPOINT, json=data, params={"query": query})
+            data = result.json()
             if result.status_code == 200:
-                st.write("Query Processed!")
+                st.write("Filtered URLs:", data["filtered_results"])
             else:
                 st.error("Error in processing query")

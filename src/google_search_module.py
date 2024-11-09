@@ -1,29 +1,20 @@
+# Importing Dependencies
+import re
+import time
 import asyncio
 import aiohttp
-import re
-from typing import List
 import logging
-import time
+from typing import List
 from contextlib import contextmanager
+
 from .google_search import search
 
+# Configure logging
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
-def calculate_time_taken(func):
-    async def async_wrapper(*args, **kwargs):
-        start_time = time.time()
-        result = await func(*args, **kwargs)
-        end_time = time.time()
-        time_taken = end_time - start_time
-        print(
-            f"Time taken for GoogleSearchScrapper function to run : {time_taken} seconds")
-        return result
-
-    return async_wrapper
-
+# Google Search Module
 class GoogleSearchModule:
-
     def __init__(self, topics: List[str]):
         self.topics = topics
         self.master_list = []
@@ -64,7 +55,6 @@ class GoogleSearchModule:
 
         return filtered_urls
 
-    @calculate_time_taken
     async def get_all_urls(self, topics: List[str]):
         tasks = [self.get_url(topic) for topic in topics]
         urls = await asyncio.gather(*tasks)

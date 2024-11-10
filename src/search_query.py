@@ -2,7 +2,7 @@
 import pandas as pd
 
 # Function to process the query
-def process_query(query: str, column_name: str, df: pd.DataFrame):
+def preprocess(query: str, column_name: str, df: pd.DataFrame):
     """
     Process the query by replacing placeholders with 
     row data from the specified column in quotes for

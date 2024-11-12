@@ -39,7 +39,7 @@ def remove_redundant_links(links, similarity_threshold=0.3):
     result = []
 
     for item in links:
-        topic = item['topic']
+        query = item['query']
         urls = item['urls']
         unique_urls = []
 
@@ -66,6 +66,6 @@ def remove_redundant_links(links, similarity_threshold=0.3):
                 unique_urls.append(url)
                 domains_seen.add(url_domain)
 
-        result.append({'topic': topic, 'urls': unique_urls})
+        result.append({'query': query, 'urls': unique_urls})
     
     return result

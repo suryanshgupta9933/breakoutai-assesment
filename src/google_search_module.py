@@ -15,19 +15,19 @@ logging.basicConfig(level=logging.INFO,
 
 # Google Search Module
 class GoogleSearchModule:
-    def __init__(self, topics: List[str]):
-        self.topics = topics
+    def __init__(self, queries: List[str]):
+        self.queries = queries
         self.master_list = []
-        self.successful_topics = 0
+        self.successful_queries = 0
 
-    async def get_url(self, topic: str):
+    async def get_url(self, query: str):
         retries = 0
         success = False
         filtered_urls = []
 
         while retries < 2 and not success:
             try:
-                result = await asyncio.to_thread(search, topic)
+                result = await asyncio.to_thread(search, query)
 
                 url_list = [url for url in result]
 
@@ -44,8 +44,8 @@ class GoogleSearchModule:
                         filtered_urls.append(url)
 
                 success = True
-                self.successful_topics += 1
-                # Number of urls to be scraped for each topic
+                self.successful_queries += 1
+                # Number of urls to be scraped for each query
                 return list(filtered_urls)[:3]
 
             except Exception as e:
@@ -55,21 +55,21 @@ class GoogleSearchModule:
 
         return filtered_urls
 
-    async def get_all_urls(self, topics: List[str]):
-        tasks = [self.get_url(topic) for topic in topics]
+    async def get_all_urls(self, queries: List[str]):
+        tasks = [self.get_url(query) for query in queries]
         urls = await asyncio.gather(*tasks)
 
         master_list = []
-        successful_topics = 0
+        successful_queries = 0
 
-        for topic, url_list in zip(topics, urls):
+        for query, url_list in zip(queries, urls):
             if url_list:
                 master_list.append({
-                    'topic': topic,
+                    'query': query,
                     'urls': url_list
                 })
-                successful_topics += 1
+                successful_queries += 1
 
-        logging.info(f"Scraped {sum(len(item['urls']) for item in master_list)} urls from {successful_topics}/{len(topics)} topics")
+        logging.info(f"Scraped {sum(len(item['urls']) for item in master_list)} urls from {successful_queries}/{len(queries)} queries")
 
         return master_list

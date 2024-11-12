@@ -7,7 +7,7 @@ import pandas as pd
 from src.search_query import preprocess
 from src.google_search_module import GoogleSearchModule
 from src.url_filter import remove_redundant_links
-from src.web_scraper import scrapper
+from src.web_scraper import scraper
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -28,8 +28,8 @@ async def run_pipeline(query: str, column_name: str, df: pd.DataFrame):
         # Filter out redundant links
         filtered_results = remove_redundant_links(url_results)
         # Scrape the urls to extract text
-        scrapped_data = scrapper(filtered_results)
-        return scrapped_data
+        scraped_data = scraper(filtered_results)
+        # Retrieve relevant context
 
     except Exception as e:
         logger.exception("An unexpected error occurred in the pipeline.")

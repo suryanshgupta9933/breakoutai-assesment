@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 async def retrieve_context(scrapped_data):
     """
-    Retrieve relevant chunks from scrapped data.
+    Retrieve relevant context from scrapped data.
     """
     retrieved_data = []
     try:

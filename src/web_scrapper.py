@@ -14,7 +14,7 @@ def is_binary_file(url):
     """
     Determine if the file is binary based on file extension.
     """
-    return url.endswith(('.pdf', '.doc', '.docx', '.xls', '.xlsx'))
+    return url.endswith(('.pdf'))
 
 def read_pdf_content(url):
     """

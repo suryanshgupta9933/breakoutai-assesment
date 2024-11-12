@@ -41,12 +41,15 @@ if uploaded_file:
         # Query section
         query = st.text_input("Enter your query with placeholders, e.g., 'Get me the email of {column_name}'")
         if st.button("Run Query"):
-            data = {"query": query,
-                    "column_name": selected_column,
-                    "df": df.to_dict(orient="records")}
-            result = requests.post(PIPELINE_ENDPOINT, json=data, params={"query": query})
-            data = result.json()
-            if result.status_code == 200:
-                st.write("Filtered URLs:", data["filtered_results"])
-            else:
-                st.error("Error in processing query")
+            with st.spinner("Generating Table..."):
+                data = {"query": query,
+                        "column_name": selected_column,
+                        "df": df.to_dict(orient="records")}
+                result = requests.post(PIPELINE_ENDPOINT, json=data, params={"query": query})
+                data = result.json()
+                df = pd.DataFrame(data["table"])
+                if result.status_code == 200:
+                    st.write("Response")
+                    st.write(df)
+                else:
+                    st.error("Error in processing query")

@@ -10,12 +10,7 @@ from PyPDF2 import PdfReader
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-def is_binary_file(url):
-    """
-    Determine if the file is binary based on file extension.
-    """
-    return url.endswith(('.pdf'))
-
+# Function to read PDF content
 def read_pdf_content(url):
     """
     Download and extract text from a PDF file.
@@ -34,7 +29,7 @@ def read_pdf_content(url):
         return pdf_text
     except Exception as e:
         logger.error(f"Failed to read pdf at {url}: {e}")
-        return None
+    continue
 
 # Function to scrape webpages and handle binary files
 def scrapper(filtered_data):
@@ -47,7 +42,8 @@ def scrapper(filtered_data):
             context = ""
             # Scrape each URL
             for url in urls:
-                if is_binary_file(url):
+                # Check if the URL is a binary file
+                if url.endswith('.pdf'):
                     # Process binary files (e.g., PDFs)
                     pdf_content = read_pdf_content(url)
                     if pdf_content:
@@ -73,4 +69,4 @@ def scrapper(filtered_data):
 
     except Exception as e:
         logger.error(f"Error in web scraping: {e}")
-        return None
+        continue

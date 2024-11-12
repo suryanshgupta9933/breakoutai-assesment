@@ -5,6 +5,7 @@ import requests
 import newspaper
 from io import BytesIO
 from PyPDF2 import PdfReader
+from bs4 import BeautifulSoup
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -29,7 +30,26 @@ def read_pdf_content(url):
         return pdf_text
     except Exception as e:
         logger.error(f"Failed to read pdf at {url}: {e}")
-    continue
+        return ""
+
+# Function to read HTML content
+def read_html_content(url):
+    """
+    Download and extract text from an HTML page using BeautifulSoup.
+    """
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an error if the request fails
+
+        # Parse the HTML content with BeautifulSoup
+        soup = BeautifulSoup(response.text, 'html.parser')
+        text = soup.get_text(separator="\n").strip()
+        
+        logger.info(f"Scraped the article from: {url}")
+        return text
+    except Exception as e:
+        logger.error(f"Failed to read HTML content at {url}: {e}")
+        return ""
 
 # Function to scrape webpages and handle binary files
 def scraper(filtered_data):
@@ -42,9 +62,9 @@ def scraper(filtered_data):
             context = ""
             # Scrape each URL
             for url in urls:
-                # Check if the URL is a binary file
+                # Check if the URL is a PDF file
                 if url.endswith('.pdf'):
-                    # Process binary files (e.g., PDFs)
+                    # Process pdf content
                     pdf_content = read_pdf_content(url)
                     if pdf_content:
                         context += pdf_content
@@ -52,7 +72,17 @@ def scraper(filtered_data):
                         logger.warning(f"Could not extract content from binary file: {url}")
                     continue
 
-                # Process HTML content
+                # Check if the URL is an HTML page
+                if url.endswith('.html') or url.endswith('.htm'):
+                    # Process html content
+                    html_content = read_html_content(url)
+                    if html_content:
+                        context += html_content
+                    else:
+                        logger.warning(f"Could not extract content from HTML file: {url}")
+                    continue
+
+                # Process web content
                 try:
                     article = newspaper.Article(url, language="en")
                     article.download()
@@ -65,8 +95,10 @@ def scraper(filtered_data):
 
             # Store the scraped content in the data dictionary
             data['scraped_text'] = context
-        return filtered_data
 
     except Exception as e:
         logger.error(f"Error in web scraping: {e}")
-        continue
+        # Append empty context on error for the failed query
+        data['scraped_text'] = ""
+
+    return filtered_data

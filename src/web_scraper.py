@@ -32,7 +32,7 @@ def read_pdf_content(url):
     continue
 
 # Function to scrape webpages and handle binary files
-def scrapper(filtered_data):
+def scraper(filtered_data):
     """
     Scrape web pages and download binary files if necessary.
     """

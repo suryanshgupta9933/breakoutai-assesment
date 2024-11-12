@@ -1,6 +1,7 @@
 # Importing Dependencies
 import os
 import logging
+from dotenv import load_dotenv
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
 from langchain_core.vectorstores import InMemoryVectorStore
@@ -10,6 +11,10 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# Load environment variables
+load_dotenv()
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+
 async def retrieve_context(scrapped_data):
     """
     Retrieve relevant context from scrapped data.
@@ -17,7 +22,7 @@ async def retrieve_context(scrapped_data):
     retrieved_data = []
     try:
         # Initialize text splitter and vector store
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=200)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
         vector_store = InMemoryVectorStore(OpenAIEmbeddings())
 
         for data in scrapped_data:

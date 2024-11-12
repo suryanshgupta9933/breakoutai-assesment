@@ -30,9 +30,9 @@ async def pipeline(data: dict):
 
         # Run the entire pipeline
         results = await run_pipeline(query, column_name, df)
-        if results:
+        if not results.empty:
             return {
-                "filtered_results": results
+                "table": results.to_dict(orient="records")
             }
             # change here
         else:

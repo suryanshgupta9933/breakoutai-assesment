@@ -15,7 +15,7 @@ This is an end-to-end tool that allows users to automate data retrieval from the
 <!--4. **Google Sheets Integration:** Supports importing queries from Google Sheets.-->
 
 ## Pipeline Flowchart
-![Pipeline Flowchart](./assets/pipeline.png)
+[![](https://app.eraser.io/workspace/ppoyn1JCW4ovoj4aMwC8/preview?elements=ljSFRrRDGOUB2yuJRALU0g&type=embed)](https://app.eraser.io/workspace/ppoyn1JCW4ovoj4aMwC8?elements=ljSFRrRDGOUB2yuJRALU0g)
 
 ## Setup Instructions
 Prerequisites:

@@ -1,6 +1,5 @@
 # Importing Dependencies
 import os
-import langchain
 
 # System prompt for creating a field name
 def get_field_name_system_prompt():

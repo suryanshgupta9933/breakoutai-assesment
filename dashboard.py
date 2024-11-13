@@ -49,7 +49,16 @@ if uploaded_file:
                 data = result.json()
                 df = pd.DataFrame(data["table"])
                 if result.status_code == 200:
-                    st.write("Response")
+                    st.markdown("## Response")
                     st.write(df)
+                    # Convert the DataFrame to CSV for download
+                    csv = df.to_csv(index=False)
+                    # Download button
+                    st.download_button(
+                        label="Download Table as CSV",
+                        data=csv,
+                        file_name="query_results.csv",
+                        mime="text/csv"
+                    )
                 else:
                     st.error("Error in processing query")

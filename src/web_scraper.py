@@ -2,7 +2,7 @@
 import os
 import logging
 import requests
-import newspaper
+# import newspaper
 from io import BytesIO
 from PyPDF2 import PdfReader
 from bs4 import BeautifulSoup
@@ -73,25 +73,25 @@ def scraper(filtered_data):
                     continue
 
                 # Check if the URL is an HTML page
-                if url.endswith('.html') or url.endswith('.htm'):
-                    # Process html content
-                    html_content = read_html_content(url)
-                    if html_content:
-                        context += html_content
-                    else:
-                        logger.warning(f"Could not extract content from HTML file: {url}")
-                    continue
+                
+                # Process html content
+                html_content = read_html_content(url)
+                if html_content:
+                    context += html_content
+                else:
+                    logger.warning(f"Could not extract content from HTML file: {url}")
+                continue
 
                 # Process web content
-                try:
-                    article = newspaper.Article(url, language="en")
-                    article.download()
-                    article.parse()
-                    logger.info(f"Scraped the article from: {url}")
-                    context += article.text + "\n\n"
-                except Exception as parse_error:
-                    logger.error(f"Failed to parse article at {url}: {parse_error}")
-                    continue
+                # try:
+                #     article = newspaper.Article(url, language="en")
+                #     article.download()
+                #     article.parse()
+                #     logger.info(f"Scraped the article from: {url}")
+                #     context += article.text + "\n\n"
+                # except Exception as parse_error:
+                #     logger.error(f"Failed to parse article at {url}: {parse_error}")
+                #     continue
 
             # Store the scraped content in the data dictionary
             data['scraped_text'] = context

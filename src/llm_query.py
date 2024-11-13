@@ -46,6 +46,7 @@ async def generate_field_data(field_name, retrieved_data):
             ])
         field_data = await llm.abatch(batch_requests)
         field_data = [response.content for response in field_data]
+        print(field_data)
         logger.info(f"Generated field data for query: {query}")
         return field_data
     except Exception as e:

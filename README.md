@@ -12,6 +12,7 @@
     - [Steps to Enable Google Sheets and Google Drive API](#steps-to-enable-google-sheets-and-google-drive-api)
     - [Creating a Service Account](#creating-a-service-account)
 7. [Setting up Environment Variables](#setting-up-environment-variables)
+8. [Dashboard UI](#dashboard-ui)
 
 ## Introduction
 This is an end-to-end tool that allows users to automate data retrieval from the web, preprocess and filter results, scrape content, extract relevant context, and structure the data in a user-friendly format. The dashboard integrates various AI-powered and web scraping capabilities, and it allows users to define custom search queries to retrieve the most relevant data from online sources.

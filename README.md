@@ -123,3 +123,10 @@ A service account is a special type of Google account intended to represent a no
 Share your Google Sheets with the Service Account Email ID and you are good to go.
 
 ## Dashboard UI
+### CSV Upload
+![csv_page_1](assets/csv_page_1.png)
+![csv_page_2](assets/csv_page_2.png)
+
+### Google Sheets
+![sheets_page_1](assets/sheets_page_1.png)
+![sheets_page_2](assets/sheets_page_2.png)

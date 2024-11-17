@@ -3,14 +3,15 @@
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Key Features](#key-features)
-3. [Pipeline Flowchart](#pipeline-flowchart)
-4. [Setup Instructions](#setup-instructions)
+3. [Frameworks](#frameworks)
+4. [Pipeline Flowchart](#pipeline-flowchart)
+5. [Setup Instructions](#setup-instructions)
     - [Manual Setup](#1-manual-setup)
     - [Docker Compose Setup](#2-docker-compose-setup)
-5. [Google Sheets Integration](#google-sheets-integration)
+6. [Google Sheets Integration](#google-sheets-integration)
     - [Steps to Enable Google Sheets and Google Drive API](#steps-to-enable-google-sheets-and-google-drive-api)
     - [Creating a Service Account](#creating-a-service-account)
-6. [Setting up Environment Variables](#setting-up-environment-variables)
+7. [Setting up Environment Variables](#setting-up-environment-variables)
 
 ## Introduction
 This is an end-to-end tool that allows users to automate data retrieval from the web, preprocess and filter results, scrape content, extract relevant context, and structure the data in a user-friendly format. The dashboard integrates various AI-powered and web scraping capabilities, and it allows users to define custom search queries to retrieve the most relevant data from online sources.
@@ -20,7 +21,18 @@ This is an end-to-end tool that allows users to automate data retrieval from the
 2. **Webpage Parsing:** Parses both HTML and PDF content to extract relevant context.
 3. **Contextual Data Retrieval:** Uses embeddings to retrieve and structure relevant data.
 4. **Asynchronous Processing:** Improves efficiency for large datasets.
-<!--4. **Google Sheets Integration:** Supports importing queries from Google Sheets.-->
+5. **Google Sheets Integration:** Supports importing spreadsheets from Google Sheets.
+
+## Frameworks
+- **Backend:** Python
+- **API:** FastAPI
+- **UI:** Streamlit
+- **Data Handling:** Pandas
+- **Google Sheets Integration:** [gspread](https://pypi.org/project/gspread/)
+- **Web Search:** Custom Google Search Module
+- **Web Scraping:** Beautiful Soup, PyPDF2, ~~Newspaper4k~~ ([Newspaper4k](https://github.com/AndyTheFactory/newspaper4k) results in better scraped data but takes more time)
+- **LLM:** OpenAI (gpt-4o-mini) (Use "gpt-4o" for better consistency)
+- **Agents:** Langchain
 
 ## Pipeline Flowchart
 [![](https://app.eraser.io/workspace/ppoyn1JCW4ovoj4aMwC8/preview?elements=ljSFRrRDGOUB2yuJRALU0g&type=embed)](https://app.eraser.io/workspace/ppoyn1JCW4ovoj4aMwC8?elements=ljSFRrRDGOUB2yuJRALU0g)
@@ -30,19 +42,11 @@ Prerequisites:
 - Python 3.10 or higher
 - Pip
 
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/suryanshgupta9933/breakoutai-assesment.git
-    cd breakoutai-assesment
-    ```
-
-2. Set Up Environment Variables
-Rename the `.env.example` file to `.env` and update the environment variables.
-    ```plaintext
-    UPLOAD_ENDPOINT="http://localhost:8000/upload-csv"
-    PIPELINE_ENDPOINT="http://localhost:8000/pipeline"
-    OPENAI_API_KEY="your-openai-api-key"
-    ```
+Clone the repository:
+```bash
+git clone https://github.com/suryanshgupta9933/breakoutai-assesment.git
+cd breakoutai-assesment
+```
 
 ### 1. Manual Setup
 
@@ -98,7 +102,9 @@ A service account is a special type of Google account intended to represent a no
 
 5. Go to `APIs & Services` > `Credentials` and click on `Create Credentials`.
 6. Select `Service Account` and fill in the details.
+
 > **Note:** Copy the `Service Account Email ID`. You will share your Google Sheets to this account.
+
 7. Press on: near recently created service account and select `Keys` and then click on `Add Key` > `Create new key`.
 8. Select JSON key and press `Create`.
 9. Your Service Account JSON Key will be downloaded.
@@ -109,10 +115,11 @@ A service account is a special type of Google account intended to represent a no
     UPLOAD_ENDPOINT="http://localhost:8000/upload-csv"
     PIPELINE_ENDPOINT="http://localhost:8000/pipeline"
     OPENAI_API_KEY="your-openai-api-key"
-    GOOGLE_SHEETS_CREDENTIALS="path/to/your/service-account-key.json"
+    SERVICE_ACCOUNT_KEY="path/to/your/service-account-key.json"
     ```
-2. Add your OpenAI API Key and path to your Google Sheets Service Account JSON Key to the `.env` file.
+2. Add your OpenAI API Key and path to your Service Account JSON Key to the `.env` file.
 
 > - **You have successfully set up Google Sheets Integration.**
 Share your Google Sheets with the Service Account Email ID and you are good to go.
 
+## Dashboard UI

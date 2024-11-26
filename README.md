@@ -1,4 +1,4 @@
-# AI Query for Structured Data using Web Scraper
+# LLM for Structured Data Query 
 
 ## Table of Contents
 1. [Introduction](#introduction)
